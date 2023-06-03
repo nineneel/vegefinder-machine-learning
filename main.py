@@ -1,6 +1,7 @@
 import tensorflow as tf
 import numpy as np
 import io
+import os
 from flask import Flask, request, jsonify
 from PIL import Image
 
@@ -45,4 +46,4 @@ def index():
     return "OK"
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
