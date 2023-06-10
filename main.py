@@ -7,7 +7,6 @@ import numpy as np
 import io
 import os
 import requests
-from flask import Flask, request, jsonify
 from PIL import Image
 
 
@@ -43,7 +42,8 @@ def songs():
 @app.route("/predict", methods=["POST"])
 def index():
     if request.method == "POST":
-        file = request.files.get('file')
+        file = request.files.get('image')
+        user_id = request.form['user_id']
 
         if file is None or file.name == "":
             return jsonify({"status": "failed", "message": "File not found"})
@@ -56,11 +56,14 @@ def index():
         
             vegetable = get_detail_vegetable(class_name=prediction[1])
 
-            save_history = True
+            save_history = False
             try:
-                save_history = requests.get(f"http://35.202.36.69/api/v1/save-history/{vegetable['id']}/{request.form['user_id']}").json()
+                if user_id != 0:
+                    save_history = requests.get(f"http://35.202.36.69/api/v1/save-history/{vegetable['id']}/{user_id}").json()
+                
             except Exception as e:
                 save_history = False
+
             data = {"status": "success", "message": "finished predict the image", "vegetable": vegetable, "probabilities": str(prediction[2] * 100), 'is_auth': save_history}
 
             return jsonify(data)
@@ -70,4 +73,4 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True, host="0.0.0.0")

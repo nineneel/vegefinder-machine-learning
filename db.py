@@ -1,6 +1,7 @@
 #db.py
 import os
 import pymysql
+import json
 
 # db_user = os.environ.get('CLOUD_SQL_USERNAME')
 # db_password = os.environ.get('CLOUD_SQL_PASSWORD')
@@ -54,6 +55,8 @@ def get_detail_vegetable(class_name):
                 type['type_group'] = type_groups.get(type['type_group_id'])
 
             get_vegetable['types'] = types
+            get_vegetable['images'] = array = json.loads( get_vegetable['images'] )
+            get_vegetable['is_saved'] = True
         else:
             get_vegetable = 'No vegetable in DB'
 
