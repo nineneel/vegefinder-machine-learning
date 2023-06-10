@@ -1,0 +1,6 @@
+Flask
+gunicorn
+PyMySQL==1.0.3
+tensorflow
+numpy
+pillow

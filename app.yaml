@@ -1,0 +1,8 @@
+#app.yaml
+runtime: python39
+
+env_variables:
+    CLOUD_SQL_USERNAME: root
+    CLOUD_SQL_PASSWORD: vegefinder1234
+    CLOUD_SQL_DATABASE_NAME: vegefinder-db-dev
+    CLOUD_SQL_CONNECTION_NAME: vegefinder-bangkit:us-central1:vegefinder-db-instance
