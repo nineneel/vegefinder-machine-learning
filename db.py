@@ -23,7 +23,7 @@ def open_connection():
     return conn
 
 
-def get_detail_vegetable(class_name):
+def get_detail_vegetable(class_name, user_id):
     conn = open_connection()
     with conn.cursor() as cursor:
         # Query 1
@@ -54,9 +54,17 @@ def get_detail_vegetable(class_name):
             for type in types:
                 type['type_group'] = type_groups.get(type['type_group_id'])
 
+
+            # Query 4 get is_saved
+            query4 =''' SELECT *
+                        FROM saveds
+                        WHERE user_id = %s AND vegetable_id = %s;'''
+            cursor.execute(query4, (user_id, get_vegetable['id']))
+            is_saved = cursor.fetchall()
+
             get_vegetable['types'] = types
             get_vegetable['images'] = array = json.loads( get_vegetable['images'] )
-            get_vegetable['is_saved'] = True
+            get_vegetable['is_saved'] = len(is_saved) > 0
         else:
             get_vegetable = 'No vegetable in DB'
 

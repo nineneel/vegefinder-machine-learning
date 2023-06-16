@@ -24,7 +24,6 @@
 
 .git
 .gitignore
-env
 
 # Python pycache:
 

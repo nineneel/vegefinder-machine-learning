@@ -10,13 +10,13 @@ import requests
 from PIL import Image
 
 
-model = keras.models.load_model("model.h5")
+model = keras.models.load_model("model_2.h5")
 class_names = ['bawang-bombay', 'bawang-merah', 'bawang-putih', 'bayam', 'bayam-merah', 'brokoli', 'buncis', 'cabai', 'daun-bawang', 'jengkol', 'kacang-panjang', 'kacang-polong', 'kailan', 'kale', 'kangkung', 'kates', 'kecambah', 'kecipir', 'kemangi', 'kembang-kol', 'kentang', 'kubis', 'labu-kuning', 'labu-siam', 'lobak', 'melinjo', 'paprika', 'pare', 'petai', 'peterseli', 'rebung', 'sawi', 'selada', 'seledri', 'serai', 'singkong', 'talas', 'terong', 'timun', 'tomat', 'wortel']
 
 
 def transform_image(image):
     image = image.convert("RGB")
-    image = image.resize((224, 224))
+    image = image.resize((299, 299))
     image_np = np.array(image)
     image_np = image_np / 255.0
     return image_np
@@ -54,7 +54,7 @@ def index():
             image_input = transform_image(pillow_img)
             prediction = predict(image_input)
         
-            vegetable = get_detail_vegetable(class_name=prediction[1])
+            vegetable = get_detail_vegetable(class_name=prediction[1], user_id=user_id)
 
             save_history = False
             try:
@@ -73,4 +73,4 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0")
+    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
